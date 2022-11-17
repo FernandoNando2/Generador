@@ -1,6 +1,5 @@
 // Fernando Hernández Domínguez
 using System;
-using System.IO;
 
 namespace Generador{
     public class Error : Exception{

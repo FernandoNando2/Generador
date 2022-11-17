@@ -1,0 +1,21 @@
+Archivo: C:\Users\Fernando Hernandez\Desktop\ITQ\5to Semestre\Lenguajes y Automatas II\Generador\c2.gram
+Fecha: 17/11/2022 09:57:42 a. m.
+Gramatica	snt
+:	st
+c	snt
+
+	finProduccion
+Programa	snt
+->	produce
+
+	finProduccion
+Librerias	snt
+->	produce
+
+	finProduccion
+Variables	snt
+->	produce
+
+	finProduccion
+Listaidentificadores	snt
+->	produce
