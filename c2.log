@@ -1,5 +1,5 @@
 Archivo: C:\Users\Fernando Hernandez\Desktop\ITQ\5to Semestre\Lenguajes y Automatas II\Generador\c2.gram
-Fecha: 17/11/2022 09:57:42 a. m.
+Fecha: 18/11/2022 10:25:35 a. m.
 Gramatica	snt
 :	st
 c	snt
@@ -7,15 +7,25 @@ c	snt
 	finProduccion
 Programa	snt
 ->	produce
+#	st
+identificador	snt
+,	st
+numero	snt
+asignacion	snt
 
 	finProduccion
 Librerias	snt
 ->	produce
+#	st
+operadorRelacional	snt
 
 	finProduccion
 Variables	snt
 ->	produce
+(	st
+)	st
 
 	finProduccion
-Listaidentificadores	snt
+ListaIdentificadores	snt
 ->	produce
+caracter	snt

@@ -88,16 +88,15 @@ namespace Generador{
                 return 3;
             return 5;
         }
-        public void NextToken() {
-            string buffer = "";           
-            char c;      
+        public void NextToken(){
+            string buffer = "";
+            char c;
             int estado = 0;
             while(estado >= 0){
                 c = (char)archivo.Peek(); //Funcion de transicion
                 estado = TRAND[estado,columna(c)];
                 clasifica(estado);
-                if (estado >= 0)
-                {
+                if (estado >= 0){
                     archivo.Read();
                     posicion++;
                     if(c == '\n')
