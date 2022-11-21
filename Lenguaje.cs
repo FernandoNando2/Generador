@@ -1,6 +1,6 @@
 // Fernando Hernández Domínguez
 /*
-Requerimiento 1: Construir un metodo para escribir en el archivo lenguaje.cs para indentar el codigo
+Requerimiento 1: Construir un metodo para escribir en el archivo lenguaje.cs para indentar el codigo ya
                     { incrementa un tab
                     } decrementa un tab
 Requerimiento 2: Declarar un atributo "primeraProduccion" de tipo string y actualizarlo con la primera produccion 
@@ -13,6 +13,7 @@ using System;
 
 namespace Generador{
     class Lenguaje : Sintaxis, IDisposable{
+        int contador;
         public Lenguaje(String ruta) : base(ruta) { }
 
         public Lenguaje(){ }
@@ -21,42 +22,63 @@ namespace Generador{
             cerrar();
         }
 
+        public void imprimir(string contenido, StreamWriter archivo){
+            if(contenido.Equals("}")){
+                if(contenido.Contains("{"))
+                    contador++;
+                if(contenido.Contains("}"))
+                    contador--;
+                for(int i = 0; i < contador; i++)
+                    archivo.Write("    ");
+            }
+            else{
+                for(int i = 0; i < contador; i++)
+                    archivo.Write("    ");
+                if(contenido.Contains("{"))
+                    contador++;
+                if(contenido.Contains("}"))
+                    contador--;
+            }
+            archivo.WriteLine(contenido);
+        }
+
         private void Programa(string metodo){
-            programa.WriteLine("using System;");
-            programa.WriteLine("namespace Generico{");
-            programa.WriteLine("\tpublic class Program{");
-            programa.WriteLine("\t\tstatic void Main(string[] args){");
-            programa.WriteLine("\t\t\tusing(Lenguaje a = new Lenguaje()){");
-            programa.WriteLine("\t\t\t\ttry{");
-            programa.WriteLine("\t\t\t\t\ta." +metodo +"();");
-            programa.WriteLine("\t\t\t\t}");
-            programa.WriteLine("\t\t\t\tcatch(Exception e){");
-            programa.WriteLine("\t\t\t\t\tConsole.WriteLine(e.Message);");
-            programa.WriteLine("\t\t\t\t}");
-            programa.WriteLine("\t\t\t}");
-            programa.WriteLine("\t\t}");
-            programa.WriteLine("\t}");
-            programa.WriteLine("}");
+            contador = 0;
+            imprimir("using System;", programa);
+            imprimir("namespace Generico{", programa);
+            imprimir("public class Programa{", programa);
+            imprimir("static void Main(){", programa);
+            imprimir("using(Lenguaje a = new Lenguaje()){", programa);
+            imprimir("try{", programa);
+            imprimir("a."+metodo+"();", programa);
+            imprimir("}", programa);
+            imprimir("catch(Exception e){", programa);
+            imprimir("Console.WriteLine(e.Message);", programa);
+            imprimir("}", programa);
+            imprimir("}", programa);
+            imprimir("}", programa);
+            imprimir("}", programa);
         }
 
         private void cabeceraLenguaje(){
-            lenguaje.WriteLine("using System;");
-            lenguaje.WriteLine("namespace Generico{");
-            lenguaje.WriteLine("\tclass Lenguaje : Sintaxis, IDisposable{");
-            lenguaje.WriteLine("\t\tstring nombreProyecto;");
-            lenguaje.WriteLine("\t\tpublic Lenguaje(String ruta) : base(ruta) { nombreProyecto = \"\"; }");
-            lenguaje.WriteLine("\t\tpublic Lenguaje(){ nombreProyecto = \"\"; }");
-            lenguaje.WriteLine("\t\tpublic void Dispose(){");
-            lenguaje.WriteLine("\t\t\tcerrar();");
-            lenguaje.WriteLine("\t\t}");
+            contador = 0;
+            imprimir("using System;", lenguaje);
+            imprimir("namespace Generico{", lenguaje);
+            imprimir("class Lenguaje : Sintaxis, IDisposable{", lenguaje);
+            imprimir("public Lenguaje(String ruta) : base(ruta){}", lenguaje);
+            imprimir("public Lenguaje(){}", lenguaje);
+            imprimir("public void Dispose(){", lenguaje);
+            imprimir("cerrar();", lenguaje);
+            imprimir("}", lenguaje);
         }
         public void gramatica(){
             cabecera();
             Programa("programa");
             cabeceraLenguaje();
             listaProducciones();
-            lenguaje.WriteLine("\t}");
-            lenguaje.WriteLine("}");
+            imprimir("}", lenguaje);
+            imprimir("}", lenguaje);
+            imprimir("}", programa);
         }
 
         public void cabecera(){
@@ -67,28 +89,31 @@ namespace Generador{
         }
 
         public void listaProducciones(){
-            lenguaje.WriteLine("\t\tprivate void " +getContenido() +"(){");
+            imprimir("private void " +getContenido() +"(){", lenguaje);
             match(tipos.snt);
             match(tipos.produce);
             simbolos();
             match(tipos.finProduccion);
-            lenguaje.WriteLine("\t\t}");
+            imprimir("}", lenguaje);
             if(!FinArchivo())
                 listaProducciones();
         }
 
         private void simbolos(){
             if(esTipo(getContenido())){
-                lenguaje.WriteLine("\t\t\tmatch(tipos." +getContenido() +");");
+                imprimir("match(tipos." +getContenido() +");", lenguaje);
                 match(tipos.snt);
             }
             else if(getClasificacion() == tipos.st){
-                lenguaje.WriteLine("\t\t\tmatch(\"" +getContenido() +"\");");
+                imprimir("match(\"" +getContenido() +"\");", lenguaje);
                 match(tipos.st);
             }
-            else if(getClasificacion() == tipos.finProduccion){
-                
+            else if(getClasificacion() == tipos.snt){
+                imprimir(getContenido() +"();", lenguaje);
+                match(tipos.snt);
             }
+            else
+                throw new Exception("Error de sintaxis en la produccion " +getContenido());
             if(getClasificacion() != tipos.finProduccion)
                 simbolos();
         }

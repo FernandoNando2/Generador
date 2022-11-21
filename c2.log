@@ -1,5 +1,5 @@
 Archivo: C:\Users\Fernando Hernandez\Desktop\ITQ\5to Semestre\Lenguajes y Automatas II\Generador\c2.gram
-Fecha: 18/11/2022 10:25:35 a. m.
+Fecha: 21/11/2022 11:29:09 a. m.
 Gramatica	snt
 :	st
 c	snt
@@ -11,7 +11,6 @@ Programa	snt
 identificador	snt
 ,	st
 numero	snt
-asignacion	snt
 
 	finProduccion
 Librerias	snt
