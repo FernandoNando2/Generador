@@ -1,30 +1,42 @@
 Archivo: C:\Users\Fernando Hernandez\Desktop\ITQ\5to Semestre\Lenguajes y Automatas II\Generador\c2.gram
-Fecha: 21/11/2022 11:29:09 a. m.
-Gramatica	snt
+Fecha: 23/11/2022 03:55:57 p. m.
+Gramatica	st
 :	st
-c	snt
+c	st
 
 	finProduccion
-Programa	snt
+Programa	st
 ->	produce
 #	st
-identificador	snt
+identificador	st
 ,	st
-numero	snt
+numero	st
+Librerias	st
 
 	finProduccion
-Librerias	snt
+Librerias	st
 ->	produce
 #	st
-operadorRelacional	snt
+include	st
+<	st
+identificador	st
+.	st
+h	st
+>	st
 
 	finProduccion
-Variables	snt
+Variables	st
 ->	produce
 (	st
+identificador	st
 )	st
+?	st
 
 	finProduccion
-ListaIdentificadores	snt
+ListaIdentificadores	st
 ->	produce
-caracter	snt
+(	st
+caracter	st
+|	st
+numero	st
+)	st

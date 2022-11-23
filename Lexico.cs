@@ -19,9 +19,9 @@ namespace Generador{
         };
         public Lexico(){
             linea = 1;
-            string path = "C:\\Users\\yumed\\Documents\\School Shait\\Quinto Semestre\\Lenguajes y Automatas II\\Generador\\prueba.cpp";
+            string path = "C:\\Users\\Fernando Hernandez\\Desktop\\ITQ\\5to Semestre\\Lenguajes y Automatas II\\Generador\\prueba.cpp";
             bool existencia = File.Exists(path);
-            log = new StreamWriter("C:\\Users\\yumed\\Documents\\School Shait\\Quinto Semestre\\Lenguajes y Automatas II\\Generador\\c.gram"); 
+            log = new StreamWriter("C:\\Users\\Fernando Hernandez\\Desktop\\ITQ\\5to Semestre\\Lenguajes y Automatas II\\Generador\\c.gram"); 
             log.AutoFlush = true;
             lenguaje = new StreamWriter("C:\\Generador\\Lenguaje.cs");
             lenguaje.AutoFlush = true;
@@ -65,7 +65,7 @@ namespace Generador{
                     setClasificacion(tipos.produce);
                     break;
                 case 3:
-                    setClasificacion(tipos.snt);
+                    setClasificacion(tipos.st);
                     break;
                 case 4:
                     setClasificacion(tipos.finProduccion);

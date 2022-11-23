@@ -1,5 +1,5 @@
 Gramatica: c
-    Programa  -> #identificador, numero
-    Librerias -> #operadorRelacional
-    Variables -> ()
-    ListaIdentificadores -> caracter
+    Programa  -> #identificador, numero Librerias
+    Librerias -> #include<identificador.h>
+    Variables -> (identificador) ?
+    ListaIdentificadores -> (caracter | numero)

@@ -6,7 +6,7 @@ namespace Generador{
         private string Contenido = "";
         private tipos Clasificacion;
         public enum tipos{
-            produce, snt, st, finProduccion
+            produce, snt, st, finProduccion, pIzq, pDer
         }
         public void setContenido(string Contenido){
             this.Contenido = Contenido;

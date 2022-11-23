@@ -3,23 +3,39 @@
 Requerimiento 1: Construir un metodo para escribir en el archivo lenguaje.cs para indentar el codigo ya
                     { incrementa un tab
                     } decrementa un tab
-Requerimiento 2: Declarar un atributo "primeraProduccion" de tipo string y actualizarlo con la primera produccion 
+Requerimiento 2: Declarar un atributo "primeraProduccion" de tipo string y actualizarlo con la primera produccion ya
                  de la gramatica
-Requerimiento 3: La primera produccion es publica, las demas son privadas
-Requerimiento 4: El constructor Lexico() parametrizado debe valiar que la extension del archivo a compilar sea .gen
-                 si no es .gen debe lanzar una excepcion
+Requerimiento 3: La primera produccion es publica, las demas son privadas ya
+Requerimiento 4: El constructor Lexico() parametrizado debe valiar que la extension del archivo a compilar sea .gram
+                 si no es .gram debe lanzar una excepcion
+Requerimiento 5: Resolver la ambigüedad de ST y SNT
+                 Recorrer linea por linea el archivo gram para extraer el nombre de cada produccion
+Requerimiento 6: Agregar el parentesis derecho e izquierdo escapados en la matriz de transiciones
+Requerimiento 7: Implementar el or y la cerradura epsilon
 */
 using System;
 
 namespace Generador{
     class Lenguaje : Sintaxis, IDisposable{
         int contador;
-        public Lenguaje(String ruta) : base(ruta) { }
+        string primeraProduccion;
+        List<string> listaSNT;
+        public Lenguaje(String ruta) : base(ruta) { primeraProduccion = ""; listaSNT = new List<string>(); }
 
-        public Lenguaje(){ }
+        public Lenguaje(){ primeraProduccion = ""; listaSNT = new List<string>(); }
 
         public void Dispose(){
             cerrar();
+        }
+
+        private bool esSNT(string contenido){
+            //return true;
+            return listaSNT.Contains(contenido);
+        }
+
+        private void agregarSNT(string contenido){
+            // Requerimiento 5
+            listaSNT.Add(contenido);
         }
 
         public void imprimir(string contenido, StreamWriter archivo){
@@ -44,9 +60,13 @@ namespace Generador{
 
         private void Programa(string metodo){
             contador = 0;
+            agregarSNT("Programa");
+            agregarSNT("Librerias");
+            agregarSNT("Variables");
+            agregarSNT("ListaIdentificadores");
             imprimir("using System;", programa);
             imprimir("namespace Generico{", programa);
-            imprimir("public class Programa{", programa);
+            imprimir("public class " +metodo +"{", programa);
             imprimir("static void Main(){", programa);
             imprimir("using(Lenguaje a = new Lenguaje()){", programa);
             imprimir("try{", programa);
@@ -73,7 +93,8 @@ namespace Generador{
         }
         public void gramatica(){
             cabecera();
-            Programa("programa");
+            primeraProduccion = getContenido();
+            Programa(primeraProduccion);
             cabeceraLenguaje();
             listaProducciones();
             imprimir("}", lenguaje);
@@ -84,13 +105,16 @@ namespace Generador{
         public void cabecera(){
             match("Gramatica");
             match(":");
-            match(tipos.snt);
+            match(tipos.st);
             match(tipos.finProduccion);
         }
 
         public void listaProducciones(){
-            imprimir("private void " +getContenido() +"(){", lenguaje);
-            match(tipos.snt);
+            if(getContenido() == primeraProduccion)
+                imprimir("public void " + getContenido() + "(){", lenguaje);
+            else
+                imprimir("private void " +getContenido() +"(){", lenguaje);
+            match(tipos.st);
             match(tipos.produce);
             simbolos();
             match(tipos.finProduccion);
@@ -102,15 +126,15 @@ namespace Generador{
         private void simbolos(){
             if(esTipo(getContenido())){
                 imprimir("match(tipos." +getContenido() +");", lenguaje);
-                match(tipos.snt);
+                match(tipos.st);
+            }
+            else if(esSNT(getContenido())){
+                imprimir(getContenido() +"();", lenguaje);
+                match(tipos.st);
             }
             else if(getClasificacion() == tipos.st){
                 imprimir("match(\"" +getContenido() +"\");", lenguaje);
                 match(tipos.st);
-            }
-            else if(getClasificacion() == tipos.snt){
-                imprimir(getContenido() +"();", lenguaje);
-                match(tipos.snt);
             }
             else
                 throw new Exception("Error de sintaxis en la produccion " +getContenido());
