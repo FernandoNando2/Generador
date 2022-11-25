@@ -1,14 +1,13 @@
 // Fernando Hernández Domínguez
 /*
-Requerimiento 1: Construir un metodo para escribir en el archivo lenguaje.cs para indentar el codigo ya
+Requerimiento 1: Construir un metodo para escribir en el archivo lenguaje.cs para indentar el codigo YA
                     { incrementa un tab
                     } decrementa un tab
-Requerimiento 2: Declarar un atributo "primeraProduccion" de tipo string y actualizarlo con la primera produccion ya
-                 de la gramatica
-Requerimiento 3: La primera produccion es publica, las demas son privadas ya
-Requerimiento 4: El constructor Lexico() parametrizado debe valiar que la extension del archivo a compilar sea .gram
-                 si no es .gram debe lanzar una excepcion
-Requerimiento 5: Resolver la ambigüedad de ST y SNT
+Requerimiento 2: Declarar un atributo "primeraProduccion" de tipo string y actualizarlo con la primera produccion de la gramatica YA
+Requerimiento 3: La primera produccion es publica, las demas son privadas YA
+Requerimiento 4: El constructor Lexico() parametrizado debe valiar que la extension del archivo a compilar sea .gram si no es .gram debe lanzar 
+                 una excepcion YA
+Requerimiento 5: Resolver la ambigüedad de ST y SNT YA
                  Recorrer linea por linea el archivo gram para extraer el nombre de cada produccion
 Requerimiento 6: Agregar el parentesis derecho e izquierdo escapados en la matriz de transiciones
 Requerimiento 7: Implementar el or y la cerradura epsilon
@@ -60,10 +59,6 @@ namespace Generador{
 
         private void Programa(string metodo){
             contador = 0;
-            agregarSNT("Programa");
-            agregarSNT("Librerias");
-            agregarSNT("Variables");
-            agregarSNT("ListaIdentificadores");
             imprimir("using System;", programa);
             imprimir("namespace Generico{", programa);
             imprimir("public class " +metodo +"{", programa);
@@ -110,6 +105,7 @@ namespace Generador{
         }
 
         public void listaProducciones(){
+            agregarSNT(getContenido());
             if(getContenido() == primeraProduccion)
                 imprimir("public void " + getContenido() + "(){", lenguaje);
             else
@@ -130,7 +126,7 @@ namespace Generador{
             }
             else if(esSNT(getContenido())){
                 imprimir(getContenido() +"();", lenguaje);
-                match(tipos.st);
+                match(tipos.snt);
             }
             else if(getClasificacion() == tipos.st){
                 imprimir("match(\"" +getContenido() +"\");", lenguaje);

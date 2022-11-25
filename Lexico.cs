@@ -20,7 +20,6 @@ namespace Generador{
         public Lexico(){
             linea = 1;
             string path = "C:\\Users\\Fernando Hernandez\\Desktop\\ITQ\\5to Semestre\\Lenguajes y Automatas II\\Generador\\prueba.cpp";
-            bool existencia = File.Exists(path);
             log = new StreamWriter("C:\\Users\\Fernando Hernandez\\Desktop\\ITQ\\5to Semestre\\Lenguajes y Automatas II\\Generador\\c.gram"); 
             log.AutoFlush = true;
             lenguaje = new StreamWriter("C:\\Generador\\Lenguaje.cs");
@@ -29,7 +28,7 @@ namespace Generador{
             programa.AutoFlush = true;
             log.WriteLine("Archivo: cgram");
             log.WriteLine("Fecha: "+DateTime.Now);
-            if (existencia == true)
+            if (File.Exists(path))
                 archivo = new StreamReader(path);
             else
                 throw new Error("Error: El archivo c.gram no existe", log);
@@ -49,6 +48,8 @@ namespace Generador{
                 archivo = new StreamReader(nombre);
             else
                 throw new Error("Error: El archivo " +Path.GetFileName(nombre)+ " no existe ", log);
+            if (Path.GetExtension(nombre) != ".gram")
+                throw new Error("Error: El archivo " +Path.GetFileName(nombre)+ " no es un archivo .gram ", log);
         }
         public void cerrar(){
             archivo.Close();
