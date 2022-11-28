@@ -1,17 +1,33 @@
 Archivo: C:\Users\Fernando Hernandez\Desktop\ITQ\5to Semestre\Lenguajes y Automatas II\Generador\c2.gram
-Fecha: 28/11/2022 07:52:23 a. m.
+Fecha: 28/11/2022 12:29:12 p. m.
 Gramatica	st
 :	st
-c	st
+cplusplus	st
 
 	finProduccion
 Programa	st
-->	produce
-#	st
-identificador	st
-,	st
-numero	st
+Main	st
 Librerias	st
+Variables	st
+Printf	st
+Scanf	st
+BloqueInstrucciones	st
+ListaInstrucciones	st
+Instruccion	st
+Programa	st
+->	produce
+Librerias	st
+Variables	st
+Main	st
+
+	finProduccion
+Main	st
+->	produce
+tipoDatos	st
+main	st
+(	st
+)	st
+BloqueInstrucciones	st
 
 	finProduccion
 Librerias	st
@@ -20,8 +36,10 @@ Librerias	st
 include	st
 <	st
 identificador	st
+\(	pIzq
 .	st
 h	st
+\)	pDer
 >	st
 
 	finProduccion
@@ -32,8 +50,45 @@ identificador	st
 \)	pDer
 
 	finProduccion
-ListaIdentificadores	st
+Printf	st
 ->	produce
+printf	st
+(	st
 \(	pIzq
-caracter	st
+cadena	st
 \)	pDer
+)	st
+
+	finProduccion
+Scanf	st
+->	produce
+scanf	st
+(	st
+\(	pIzq
+cadena	st
+\)	pDer
+)	st
+
+	finProduccion
+BloqueInstrucciones	st
+->	produce
+{	st
+ListaInstrucciones	st
+}	st
+
+	finProduccion
+ListaInstrucciones	st
+->	produce
+Instruccion	st
+\(	pIzq
+;	st
+ListaInstrucciones	st
+\)	pDer
+
+	finProduccion
+Instruccion	st
+->	produce
+Printf	st
+(	st
+Scanf	st
+)	st

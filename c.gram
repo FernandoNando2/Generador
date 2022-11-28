@@ -1,10 +1,10 @@
-Gramatica c; {
-    Programa  -> Librerias? Variables? Main
-    Librerias -> #include<identificador(.h)?> Librerias?
-    Variables -> tipo_dato Lista_identificadores; Variables?
-    Lista_identificadores -> identificador (,Lista_identificadores)?
-    Bloque de instrucciones -> {lista de intrucciones?}
-    ListaInstrucciones -> Instruccion ListaInstrucciones?
+Gramatica: c
+    Programa  -> \(Librerias\) \(Variables\) Main
+    Librerias -> #include<identificador.h> \(Librerias\)
+    Variables -> tipo_dato Lista_identificadores; \(Variables\)
+    Lista_identificadores -> identificador \(Lista_identificadores\)
+    Bloque de instrucciones -> { \(lista de intrucciones\)}
+    ListaInstrucciones -> Instruccion \(ListaInstrucciones\)
     Instruccion -> Printf | Scanf | If | While | do while | Asignacion
     Asignacion -> identificador = cadena | Expresion;
     While -> while(Condicion) bloque de instrucciones | instruccion

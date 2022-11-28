@@ -10,13 +10,14 @@ Requerimiento 4: El constructor Lexico() parametrizado debe valiar que la extens
 Requerimiento 5: Resolver la ambigüedad de ST y SNT YA
                  Recorrer linea por linea el archivo gram para extraer el nombre de cada produccion
 Requerimiento 6: Agregar el parentesis derecho e izquierdo escapados en la matriz de transiciones YA
-Requerimiento 7: Implementar la cerradura epsilon
+Requerimiento 7: Implementar la cerradura epsilon YA
 */
 using System;
 
 namespace Generador{
     class Lenguaje : Sintaxis, IDisposable{
         int contador;
+        long pos;
         string primeraProduccion;
         List<string> listaSNT;
         public Lenguaje(String ruta) : base(ruta) { primeraProduccion = ""; listaSNT = new List<string>(); }
@@ -32,9 +33,17 @@ namespace Generador{
             return listaSNT.Contains(contenido);
         }
 
-        private void agregarSNT(string contenido){
-            // Requerimiento 5
-            listaSNT.Add(contenido);
+        private void agregarSNT(){
+            listaSNT.Add(getContenido());
+            archivo.ReadLine();
+            NextToken();
+            if(!FinArchivo())
+                agregarSNT();
+            else{
+                archivo.DiscardBufferedData();
+                archivo.BaseStream.Seek(pos, SeekOrigin.Begin);
+                NextToken();
+            }
         }
 
         public void imprimir(string contenido, StreamWriter archivo){
@@ -91,6 +100,9 @@ namespace Generador{
             primeraProduccion = getContenido();
             Programa(primeraProduccion);
             cabeceraLenguaje();
+            string var = getContenido();
+            pos = posicion - var.Length;
+            agregarSNT();
             listaProducciones();
             imprimir("}", lenguaje);
             imprimir("}", lenguaje);
@@ -105,7 +117,6 @@ namespace Generador{
         }
 
         public void listaProducciones(){
-            agregarSNT(getContenido());
             if(getContenido() == primeraProduccion)
                 imprimir("public void " + getContenido() + "(){", lenguaje);
             else
@@ -124,7 +135,7 @@ namespace Generador{
                 match(tipos.pIzq);
                 if(esTipo(getContenido()))
                     imprimir("if(getClasificacion() == tipos." +getContenido() +"){", lenguaje);
-                else if(esSNT(getContenido()))
+                else
                     imprimir("if(getContenido() == \"" +getContenido() +"\"){", lenguaje);
                 simbolos();
                 match(tipos.pDer);
@@ -136,7 +147,7 @@ namespace Generador{
             }
             else if(esSNT(getContenido())){
                 imprimir(getContenido() +"();", lenguaje);
-                match(tipos.snt);
+                match(tipos.st);
             }
             else if(getClasificacion() == tipos.st){
                 imprimir("match(\"" +getContenido() +"\");", lenguaje);
