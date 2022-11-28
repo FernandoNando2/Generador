@@ -10,12 +10,16 @@ namespace Generador{
         const int E = -2;
         protected int linea, posicion;
         int[,] TRAND = new int[,]{
-            { 0, 1, 5, 3, 4, 5},
-            { F, F, 2, F, F, F},
-            { F, F, F, F, F, F},
-            { F, F, F, 3, F, F},
-            { F, F, F, F, F, F},
-            { F, F, F, F, F, F},
+        //   WS, -, >, L,EL, \, (, ),LD
+       /*0*/{ 0, 1, 8, 3, 4, 5, 8, 8, 8},
+       /*1*/{ F, F, 2, F, F, F, F, F, F},
+       /*2*/{ F, F, F, F, F, F, F, F, F},
+       /*3*/{ F, F, F, 3, F, F, F, F, F},
+       /*4*/{ F, F, F, F, F, F, F, F, F},
+       /*5*/{ F, F, F, F, F, F, 6, 7, F},
+       /*6*/{ F, F, F, F, F, F, F, F, F},
+       /*7*/{ F, F, F, F, F, F, F, F, F},
+       /*8*/{ F, F, F, F, F, F, F, F, F},
         };
         public Lexico(){
             linea = 1;
@@ -74,6 +78,15 @@ namespace Generador{
                 case 5:
                     setClasificacion(tipos.st);
                     break;
+                case 6:
+                    setClasificacion(tipos.pIzq);
+                    break;
+                case 7:
+                    setClasificacion(tipos.pDer);
+                    break;
+                case 8:
+                    setClasificacion(tipos.st);
+                    break;
             }
         }
         private int columna(char c){
@@ -87,7 +100,14 @@ namespace Generador{
                 return 2;
             else if (char.IsLetter(c))
                 return 3;
-            return 5;
+            else if ( c == '\\')
+                return 5;
+            else if (c == '(')
+                return 6;
+            else if (c == ')')
+                return 7;
+            else
+                return 8;
         }
         public void NextToken(){
             string buffer = "";

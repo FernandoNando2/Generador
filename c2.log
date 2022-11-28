@@ -1,5 +1,5 @@
 Archivo: C:\Users\Fernando Hernandez\Desktop\ITQ\5to Semestre\Lenguajes y Automatas II\Generador\c2.gram
-Fecha: 23/11/2022 04:05:53 p. m.
+Fecha: 28/11/2022 07:52:23 a. m.
 Gramatica	st
 :	st
 c	st
@@ -27,16 +27,13 @@ h	st
 	finProduccion
 Variables	st
 ->	produce
-(	st
+\(	pIzq
 identificador	st
-)	st
-?	st
+\)	pDer
 
 	finProduccion
 ListaIdentificadores	st
 ->	produce
-(	st
+\(	pIzq
 caracter	st
-|	st
-numero	st
-)	st
+\)	pDer

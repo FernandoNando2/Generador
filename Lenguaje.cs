@@ -9,8 +9,8 @@ Requerimiento 4: El constructor Lexico() parametrizado debe valiar que la extens
                  una excepcion YA
 Requerimiento 5: Resolver la ambigüedad de ST y SNT YA
                  Recorrer linea por linea el archivo gram para extraer el nombre de cada produccion
-Requerimiento 6: Agregar el parentesis derecho e izquierdo escapados en la matriz de transiciones
-Requerimiento 7: Implementar el or y la cerradura epsilon
+Requerimiento 6: Agregar el parentesis derecho e izquierdo escapados en la matriz de transiciones YA
+Requerimiento 7: Implementar la cerradura epsilon
 */
 using System;
 
@@ -120,7 +120,17 @@ namespace Generador{
         }
 
         private void simbolos(){
-            if(esTipo(getContenido())){
+            if(getClasificacion() == tipos.pIzq){
+                match(tipos.pIzq);
+                if(esTipo(getContenido()))
+                    imprimir("if(getClasificacion() == tipos." +getContenido() +"){", lenguaje);
+                else if(esSNT(getContenido()))
+                    imprimir("if(getContenido() == \"" +getContenido() +"\"){", lenguaje);
+                simbolos();
+                match(tipos.pDer);
+                imprimir("}", lenguaje);
+            }
+            else if(esTipo(getContenido())){
                 imprimir("match(tipos." +getContenido() +");", lenguaje);
                 match(tipos.st);
             }
@@ -134,7 +144,7 @@ namespace Generador{
             }
             else
                 throw new Exception("Error de sintaxis en la produccion " +getContenido());
-            if(getClasificacion() != tipos.finProduccion)
+            if(getClasificacion() != tipos.finProduccion && getClasificacion() != tipos.pDer)
                 simbolos();
         }
 
